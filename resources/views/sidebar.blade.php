@@ -16,6 +16,10 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                     Add Product
                 </a>
+                <a class="nav-link collapsed" href="{{ route('orders') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                    Orders
+                </a>
             </div>
         </div>
     </nav>

@@ -10,7 +10,7 @@
             <div class="col-md-8 offset-2">
                 <div class="card" style="border-radius:0;">
                     <div class="card-body">
-                        @if ($products)
+                        @if (count($products)>0)
                             <h4>All Products</h4>
                             <table class="table table-bordered">
                                 <thead>
@@ -31,10 +31,14 @@
                                             <td>{{ $product->quantity }}</td>
                                             <td>
                                                 <div class="flex">
-                                                    <a href="" class="btn btn-sm btn-success">Sell</a>
-                                                    <a href="" class="btn btn-sm btn-warning">Edit</a>
-                                                    <form action="" class="d-inline">
-                                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                    <a href="{{ route('product.sale.view',$product->id) }}" class="btn btn-sm btn-success">Sell</a>
+                                                    <a href="{{ route('product.edit', $product->id) }}"
+                                                        class="btn btn-sm btn-warning">Edit</a>
+                                                    <form action="{{ route('product.destroy', $product->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button onclick="return confirm('Are you sure to delete?');" type="submit" class="btn btn-sm btn-danger">Delete</button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -43,6 +47,8 @@
                                 </tbody>
                             </table>
                             {{ $products->links() }}
+                            @else
+                            <h4>No Product Found</h4>
                         @endif
                     </div>
                 </div>

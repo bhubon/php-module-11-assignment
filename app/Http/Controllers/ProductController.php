@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = DB::table('products')->orderBy('id', 'desc')->paginate(2);
+        $products = DB::table('products')->orderBy('id', 'desc')->paginate(10);
         return view('product.index', ['products' => $products]);
     }
 
@@ -37,7 +37,6 @@ class ProductController extends Controller
 
         $product = DB::table('products')->insert($validated);
         if ($product) {
-            toastr()->addSuccess('Your account has been restored.');
             return redirect()->route('product.index')->with('success', 'Product Successfully created');
         } else {
             return redirect()->back()->with('error', 'Somehing wen\'t wrong ');
@@ -58,7 +57,8 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product = DB::table('products')->where('id',$id);
+        return view('product.edit', ['product' => $product]);
     }
 
     /**
@@ -66,7 +66,16 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|min:3',
+            'price' => 'required|numeric',
+            'quantity' => 'required|numeric',
+        ]);
+        DB::table('products')
+            ->where('id', $id)
+            ->update($validated);
+        return redirect()->back()->with('success', 'Product successfully updated!');
+
     }
 
     /**
@@ -74,6 +83,9 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::table('products')
+            ->where('id', $id)
+            ->delete();
+        return redirect()->back()->with('success', 'Product successfully deleted!');
     }
 }
